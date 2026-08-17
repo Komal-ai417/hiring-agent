@@ -53,7 +53,7 @@ def list_available_roles() -> List[str]:
 # Scaffold contents for a freshly-created role. Placeholder categories keep the
 # new role immediately runnable; edit them to fit the real rubric.
 _SCAFFOLD_MANIFEST = {
-    "position_title": "TODO: describe the position (e.g. 'Backend Engineer at HackerRank')",
+    "position_title": "TODO: describe the position (e.g. 'Backend Engineer')",
     "categories": [
         {"key": "category_one", "label": "Category One", "max": 50, "icon": "⭐"},
         {"key": "category_two", "label": "Category Two", "max": 50, "icon": "⭐"},
