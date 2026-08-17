@@ -60,6 +60,7 @@ logging.basicConfig(
 
 # ── Routes ──────────────────────────────────────────────────────────────
 
+
 @app.route("/")
 def index():
     """Serve the single-page UI."""
@@ -108,18 +109,21 @@ def evaluate():
         """Run the full scoring pipeline in a background thread, pushing events."""
         try:
             # ── Step 1: Extract PDF ──
-            progress_queue.put(("progress", {
-                "step": "extract",
-                "message": "Extracting data from PDF…",
-                "percent": 10,
-            }))
+            progress_queue.put(
+                (
+                    "progress",
+                    {
+                        "step": "extract",
+                        "message": "Extracting data from PDF…",
+                        "percent": 10,
+                    },
+                )
+            )
 
             evaluation_model = build_evaluation_model(role)
 
             # Check for cached resume data
-            cache_filename = (
-                f"cache/resumecache_{pdf_path.stem}.json"
-            )
+            cache_filename = f"cache/resumecache_{pdf_path.stem}.json"
             resume_data = None
             cache_loaded = False
 
@@ -148,9 +152,14 @@ def evaluate():
                 resume_data = pdf_handler.extract_json_from_pdf(str(pdf_path))
 
                 if resume_data is None:
-                    progress_queue.put(("error", {
-                        "error": "Failed to extract data from the PDF. The file may be corrupted or contain no readable text."
-                    }))
+                    progress_queue.put(
+                        (
+                            "error",
+                            {
+                                "error": "Failed to extract data from the PDF. The file may be corrupted or contain no readable text."
+                            },
+                        )
+                    )
                     return
 
                 # Cache if dev mode
@@ -171,11 +180,16 @@ def evaluate():
                             encoding="utf-8",
                         )
 
-            progress_queue.put(("progress", {
-                "step": "github",
-                "message": "Fetching GitHub profile…",
-                "percent": 35,
-            }))
+            progress_queue.put(
+                (
+                    "progress",
+                    {
+                        "step": "github",
+                        "message": "Fetching GitHub profile…",
+                        "percent": 35,
+                    },
+                )
+            )
 
             # ── Step 2: GitHub enrichment ──
             github_cache_filename = f"cache/githubcache_{pdf_path.stem}.json"
@@ -195,11 +209,19 @@ def evaluate():
 
             if not github_cache_loaded:
                 profiles = []
-                if resume_data and hasattr(resume_data, "basics") and resume_data.basics:
+                if (
+                    resume_data
+                    and hasattr(resume_data, "basics")
+                    and resume_data.basics
+                ):
                     profiles = resume_data.basics.profiles or []
 
                 github_profile = next(
-                    (p for p in profiles if p.network and p.network.lower() == "github"),
+                    (
+                        p
+                        for p in profiles
+                        if p.network and p.network.lower() == "github"
+                    ),
                     None,
                 )
 
@@ -221,11 +243,16 @@ def evaluate():
                             encoding="utf-8",
                         )
 
-            progress_queue.put(("progress", {
-                "step": "evaluate",
-                "message": "Running AI evaluation…",
-                "percent": 55,
-            }))
+            progress_queue.put(
+                (
+                    "progress",
+                    {
+                        "step": "evaluate",
+                        "message": "Running AI evaluation…",
+                        "percent": 55,
+                    },
+                )
+            )
 
             # ── Step 3: Evaluate ──
             model_params = MODEL_PARAMETERS.get(DEFAULT_MODEL)
@@ -242,11 +269,16 @@ def evaluate():
 
             evaluation_result = evaluator.evaluate_resume(resume_text)
 
-            progress_queue.put(("progress", {
-                "step": "complete",
-                "message": "Generating results…",
-                "percent": 90,
-            }))
+            progress_queue.put(
+                (
+                    "progress",
+                    {
+                        "step": "complete",
+                        "message": "Generating results…",
+                        "percent": 90,
+                    },
+                )
+            )
 
             # ── Build response ──
             candidate_name = pdf_path.stem
@@ -274,17 +306,20 @@ def evaluate():
                 "max_final_score": role.max_final_score,
             }
 
-            progress_queue.put(("result", {
-                "evaluation": eval_dict,
-                "candidate_name": candidate_name,
-                "role_info": role_info,
-            }))
+            progress_queue.put(
+                (
+                    "result",
+                    {
+                        "evaluation": eval_dict,
+                        "candidate_name": candidate_name,
+                        "role_info": role_info,
+                    },
+                )
+            )
 
         except Exception as e:
             logger.exception("Pipeline error")
-            progress_queue.put(("error", {
-                "error": f"Evaluation failed: {str(e)}"
-            }))
+            progress_queue.put(("error", {"error": f"Evaluation failed: {str(e)}"}))
         finally:
             # Cleanup uploaded file
             try:

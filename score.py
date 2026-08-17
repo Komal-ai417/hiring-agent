@@ -5,7 +5,7 @@ import json
 # Fix for Windows Console Unicode errors
 if sys.platform == "win32":
     try:
-        sys.stdout.reconfigure(encoding='utf-8')
+        sys.stdout.reconfigure(encoding="utf-8")
     except AttributeError:
         pass
 
@@ -47,9 +47,7 @@ logging.basicConfig(
 )
 
 
-def print_evaluation_results(
-    evaluation, role: Role, candidate_name: str = "Candidate"
-):
+def print_evaluation_results(evaluation, role: Role, candidate_name: str = "Candidate"):
     """Print evaluation results in a readable format."""
     print("\n" + "=" * 80)
     print(f"📊 RESUME EVALUATION RESULTS FOR: {candidate_name}")

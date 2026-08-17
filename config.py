@@ -58,6 +58,4 @@ def provider_for(model_name: str) -> dict:
         }
 
     available = ", ".join(sorted(MODEL_PARAMETERS))
-    raise ValueError(
-        f"Unknown model '{model_name}'. Available models: {available}"
-    )
+    raise ValueError(f"Unknown model '{model_name}'. Available models: {available}")
