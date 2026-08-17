@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Upload a resume PDF and get an AI-powered evaluation with detailed scores, strengths, and improvement areas.">
+  <title>Hiring Agent — AI Resume Evaluator</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23d97757' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z'%3E%3C/path%3E%3Cpolyline points='14 2 14 8 20 8'%3E%3C/polyline%3E%3Cline x1='16' y1='13' x2='8' y2='13'%3E%3C/line%3E%3Cline x1='16' y1='17' x2='8' y2='17'%3E%3C/line%3E%3Cpolyline points='10 9 9 9 8 9'%3E%3C/polyline%3E%3C/svg%3E">
+</head>
+<body>
+
+  <div class="app-container">
+
+    <!-- Header -->
+    <header class="app-header">
+      <h1 class="app-header__title">Hiring Agent</h1>
+      <p class="app-header__subtitle">Upload a resume PDF and get an instant, explainable AI evaluation with detailed scoring.</p>
+    </header>
+
+    <!-- Upload Card -->
+    <section class="glass-card" id="upload-card">
+      <div class="card-title">
+        <span class="card-title__icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></span>
+        Upload Resume
+      </div>
+
+      <div class="upload-zone" id="upload-zone">
+        <div class="upload-zone__default-content">
+          <span class="upload-zone__icon"><svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg></span>
+          <p class="upload-zone__text"><strong>Click or drag</strong> to upload your resume</p>
+          <p class="upload-zone__hint">PDF files only · Max 50 MB</p>
+        </div>
+        <div class="upload-zone__file-info" id="file-info">
+          <span class="file-info__icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></span>
+          <div class="file-info__details">
+            <div class="file-info__name" id="file-info-name"></div>
+            <div class="file-info__size" id="file-info-size"></div>
+          </div>
+          <button class="file-info__remove" id="remove-file-btn" type="button">Remove</button>
+        </div>
+        <input type="file" id="file-input" accept=".pdf" aria-label="Upload resume PDF">
+      </div>
+    </section>
+
+    <!-- Config Card -->
+    <section class="glass-card" id="config-card">
+      <div class="card-title">
+        <span class="card-title__icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></span>
+        Configuration
+      </div>
+
+      <div class="role-selector">
+        <label for="role-select">Evaluation Role</label>
+        <select id="role-select">
+          <option value="">Loading roles…</option>
+        </select>
+      </div>
+
+      <button class="evaluate-btn" id="evaluate-btn" disabled>
+        <span class="evaluate-btn__text" id="evaluate-btn-text">Evaluate Resume</span>
+      </button>
+    </section>
+
+    <!-- Error Banner -->
+    <div class="error-banner" id="error-banner">
+      <span class="error-banner__icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg></span>
+      <div class="error-banner__content">
+        <div class="error-banner__title" id="error-title">Error</div>
+        <div class="error-banner__message" id="error-message"></div>
+        <button class="error-banner__retry" id="retry-btn" type="button">Try Again</button>
+      </div>
+    </div>
+
+    <!-- Progress Section -->
+    <section class="glass-card progress-section" id="progress-section">
+      <div class="card-title">
+        <span class="card-title__icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></span>
+        Evaluating
+      </div>
+      <div class="progress-bar-track">
+        <div class="progress-bar-fill" id="progress-bar-fill"></div>
+      </div>
+      <div class="progress-steps" id="progress-steps"></div>
+    </section>
+
+    <!-- Results Section -->
+    <div class="results-section" id="results-section">
+
+      <!-- Overall Score -->
+      <section class="glass-card">
+        <div class="overall-score">
+          <div class="score-ring" id="score-ring">
+            <svg viewBox="0 0 180 180">
+              <circle class="score-ring__bg" cx="90" cy="90" r="80"/>
+              <circle class="score-ring__fill" id="score-ring-fill" cx="90" cy="90" r="80"/>
+            </svg>
+            <div class="score-ring__value">
+              <div class="score-ring__number" id="score-number">0</div>
+              <div class="score-ring__label" id="score-max">/ 100</div>
+            </div>
+          </div>
+          <div class="overall-score__title">Overall Score</div>
+          <div class="overall-score__candidate" id="candidate-name">Candidate</div>
+        </div>
+      </section>
+
+      <!-- Category Scores -->
+      <section class="glass-card">
+        <div class="card-title">
+          <span class="card-title__icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg></span>
+          Detailed Scores
+        </div>
+        <div class="category-scores" id="category-scores"></div>
+      </section>
+
+      <!-- Bonus & Deductions -->
+      <section class="glass-card">
+        <div class="card-title">
+          <span class="card-title__icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M16 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M2 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg></span>
+          Bonus & Deductions
+        </div>
+        <div class="bonus-deductions" id="bonus-deductions"></div>
+      </section>
+
+      <!-- Strengths & Improvements -->
+      <section class="glass-card">
+        <div class="card-title">
+          <span class="card-title__icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1.3.5 2.6 1.5 3.5.8.8 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg></span>
+          Analysis
+        </div>
+        <div class="si-section" id="strengths-improvements"></div>
+      </section>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <p class="app-footer__text">
+        Powered by <a class="app-footer__link" href="https://github.com/Komal-ai417/hiring-agent" target="_blank" rel="noopener">Hiring Agent</a>
+        · Resume data is processed locally and not stored
+      </p>
+    </footer>
+
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
