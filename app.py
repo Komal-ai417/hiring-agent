@@ -71,7 +71,21 @@ def index():
 def get_roles():
     """Return list of available evaluation roles."""
     roles = list_available_roles()
-    return jsonify({"roles": roles})
+
+    roles_data = []
+    for r in roles:
+        try:
+            role = load_role(r)
+            roles_data.append({"id": r, "title": role.position_title})
+        except Exception:
+            roles_data.append({"id": r, "title": r.replace("_", " ").title()})
+
+    # Sort: software_engineering_intern first, then others alphabetically
+    roles_data.sort(
+        key=lambda x: (0 if x["id"] == "software_engineering_intern" else 1, x["title"])
+    )
+
+    return jsonify({"roles": roles_data})
 
 
 @app.route("/api/evaluate", methods=["POST"])

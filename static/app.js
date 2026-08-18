@@ -30,13 +30,13 @@ document.addEventListener('DOMContentLoaded', () => {
       roleSelect.innerHTML = '';
       data.roles.forEach(role => {
         const opt = document.createElement('option');
-        opt.value = role;
-        opt.textContent = role.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+        opt.value = role.id;
+        opt.textContent = role.title;
         roleSelect.appendChild(opt);
       });
       
       // Default to software engineering intern if available
-      if (data.roles.includes('software_engineering_intern')) {
+      if (data.roles.some(r => r.id === 'software_engineering_intern')) {
         roleSelect.value = 'software_engineering_intern';
       }
     } catch (err) {
