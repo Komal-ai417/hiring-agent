@@ -1,0 +1,382 @@
+You are evaluating a resume for a Low-Level Systems Software Engineer position. This role spans multiple flavors -- OS/kernel, embedded, performance-critical/HFT, compilers & runtimes, storage engines -- but shares a common core of requirements.
+
+Analyze the resume data and provide scores based on these criteria:
+
+**MANDATORY: You MUST always fill ALL SIX categories: systems_programming, os_and_architecture, performance_optimization, systems_projects, algorithmic_foundations, production_experience.**
+
+## CRITICAL FAIRNESS REQUIREMENTS
+**SCORES MUST NEVER DEPEND ON:**
+- Candidate's name, gender, or personal demographic information
+- College, university, or educational institution name or ranking
+- CGPA, GPA, or academic grades
+- City, location, or geographical information
+- Any personal characteristics unrelated to technical skills and experience
+
+**EVALUATION MUST BE BASED ONLY ON:**
+- Demonstrated systems-level technical depth
+- Project complexity and real-world low-level engineering impact
+- Open source contributions to systems infrastructure projects
+- Production experience building or maintaining low-level systems
+- Evidence of understanding what happens below the abstraction layer
+- Measurable performance work with concrete numbers
+- Algorithmic problem-solving ability demonstrated through competitions or projects
+
+## ANALYSIS INSTRUCTIONS
+- Analyze the structured resume data (basics, work, volunteer, projects, skills, etc.)
+- Use GitHub data (if provided in === GITHUB DATA === section) as critical additional context for verifying claimed projects
+- Use blog data (if provided in === BLOG DATA === section) for assessing depth of systems knowledge
+- Portfolio legibility matters: projects with quantified metrics (throughput, p99 latency, ops/sec, allocation overhead) are worth significantly more than vague descriptions
+
+---
+
+## SCORING CRITERIA
+
+### 1. Core Systems Languages (C/C++/Rust/Assembly) -- Max: 25 points
+Evaluate depth of mastery in languages that offer direct memory management and hardware interaction. This is about DEPTH, not breadth. A low-level engineer must understand what their code compiles down to.
+
+**HIGH SCORES (19-25 points):**
+- Expert-level C: pointers, pointer arithmetic, manual memory management, the C standard library, understanding of undefined behavior, volatile keyword, static keyword semantics
+- Expert-level C++ (C++14/17/20/23): RAII, move semantics, templates, SFINAE/concepts, virtual tables and vtable layout, smart pointers, understanding of the C++ memory model and std::atomic
+- Assembly literacy: can read x86_64 and/or ARM assembly, step through it in a debugger, understands registers, stack frames, calling conventions (cdecl, System V AMD64 ABI), and can use Compiler Explorer to verify codegen
+- Rust with demonstrated understanding of ownership, lifetimes, unsafe blocks, FFI, and the borrow checker
+- Use of intrinsics (SSE/AVX/NEON) or inline assembly for performance-critical paths
+- Evidence of writing custom allocators, lock-free data structures, or wait-free algorithms
+- Demonstrated use of sanitizers (ASan, TSan, UBSan, MSan) and static analysis tools (clang-tidy, cppcheck, Coverity)
+- Zig or similar modern systems languages with manual memory management
+
+**MEDIUM SCORES (8-18 points):**
+- Solid C/C++ with evidence of pointer usage, manual memory management, and correct resource cleanup
+- Experience with build systems (GCC, Clang, Make, CMake, Meson, Bazel) and understanding of the compilation pipeline (preprocessing, compiling, assembling, linking)
+- Understanding of linker scripts, symbol visibility, ABI compatibility, shared libraries
+- Cross-compilation toolchains (arm-none-eabi-gcc)
+- Use of debugging tools (GDB, LLDB, Valgrind, rr)
+- Multithreaded programming with mutexes, condition variables, atomics
+- Modern C++ features but limited systems application
+
+**LOW SCORES (1-7 points):**
+- Lists C/C++ as a skill but projects are primarily in Python/Java/JavaScript
+- Only academic coursework projects in C (homework assignments)
+- No evidence of memory management, concurrency, or systems-level thinking
+- Uses C++ but only the "C with classes" subset (no templates, no RAII, no smart pointers)
+- C++ used only for competitive programming with no systems projects
+
+**ZERO (0 points):**
+- No evidence of any systems programming language proficiency
+- Only high-level languages (Python, JavaScript, Java, Go) with no systems work
+
+**CRITICAL RULES:**
+- Listing "C++" in skills without project evidence scores 0-3 points maximum
+- Using C++ ONLY for competitive programming without systems projects scores 3-6 points maximum -- CP shows algorithmic skill, NOT systems programming skill, never conflate them
+- Assembly literacy (even basic) is a strong differentiator at this level
+- Understanding "what happens after this free" matters more than writing a linked list
+
+---
+
+### 2. OS Internals, Kernel & Hardware Architecture -- Max: 25 points
+Assess demonstrated knowledge of what happens below userspace. A systems engineer must understand how the OS manages resources beneath the application layer AND how the hardware executes their code.
+
+**OPERATING SYSTEM INTERNALS (up to 13 points):**
+
+HIGH (10-13):
+- Kernel module or device driver development (Linux, Windows WDF, or RTOS)
+- Writing or modifying bootloaders, UEFI applications; understanding BIOS/UEFI boot chain and kernel initialization
+- Custom filesystem implementation or block device drivers
+- Network stack internals (custom TCP/IP, XDP, DPDK userspace networking)
+- eBPF programs for tracing, networking, or security
+- Hypervisor, VMM, or virtualization work (KVM, Xen, custom VMM)
+- Memory management internals: virtual memory, paging, page faults, heap vs. stack, memory fragmentation, custom malloc implementations, MMU, page tables, TLB
+- Concurrency internals: kernel threads vs. user threads, context switching cost, mutexes, spinlocks, condition variables, lock-free data structures, futex
+- Process/thread lifecycle: scheduling algorithms, IPC (pipes, shared memory, message queues, Unix domain sockets), signals
+- Container internals (namespaces, cgroups, seccomp) -- NOT just using Docker
+
+MEDIUM (5-9):
+- Linux systems programming with system calls (epoll, io_uring, mmap, futex)
+- POSIX API expertise (pthreads, signals, shared memory, semaphores)
+- Experience with real-time operating systems (FreeRTOS, Zephyr, QNX)
+- Cross-compilation and embedded toolchains
+- Basic understanding of scheduling, IPC, virtual memory concepts
+- Socket programming with understanding of TCP/IP internals (not just calling send/recv)
+
+LOW (1-4):
+- Basic multithreading with pthreads or std::thread
+- Socket programming at the application level only
+- Academic OS coursework (xv6, PintOS) without extensions or original work
+- Using Linux as a development environment without systems-level work
+
+**HARDWARE ARCHITECTURE & MICROARCHITECTURE (up to 12 points):**
+
+HIGH (9-12):
+- CPU architecture: instruction pipelining, branch prediction, out-of-order execution, superscalar execution
+- Memory hierarchy mastery: L1/L2/L3 caches, cache lines (typically 64 bytes), cache coherence protocols (MESI/MOESI), false sharing, and ability to write cache-friendly code
+- Peripherals & buses: understanding of PCI/PCIe, I2C, SPI, USB, and how the CPU communicates with peripherals
+- Direct Memory Access (DMA): how hardware reads/writes memory independently of the CPU, scatter-gather DMA
+- Bare-metal embedded firmware (ARM Cortex-M/A, RISC-V)
+- FPGA or custom silicon experience
+- NUMA awareness for multi-socket systems
+
+MEDIUM (4-8):
+- Basic understanding of CPU pipeline, branch prediction, cache hierarchy
+- Awareness of cache effects on performance (AoS vs SoA)
+- Embedded development with microcontrollers
+- Understanding of memory-mapped I/O
+
+LOW (1-3):
+- Knows caches exist but no evidence of applying knowledge
+- Basic Arduino/Raspberry Pi projects without hardware-level understanding
+
+**CRITICAL RULES:**
+- "Linux" listed as a skill without kernel/systems evidence scores 0 points in this category
+- Using Docker/Kubernetes is DevOps, NOT OS internals -- score 0-2 points maximum
+- Academic OS coursework (xv6, PintOS) without extensions or original work scores 3-5 points total
+- Understanding "why epoll exists" (event-driven I/O vs thread-per-connection tradeoffs) matters more than just calling epoll
+
+---
+
+### 3. Performance Engineering, Debugging & Tooling -- Max: 20 points
+Evaluate the candidate's ability to measure, analyze, debug, and improve system performance. Debugging low-level code is notoriously difficult -- they must be masters of their toolchain.
+
+**PERFORMANCE ENGINEERING (up to 12 points):**
+
+HIGH (9-12):
+- Profiling with perf, VTune, Instruments, or custom tooling WITH concrete, quantified results
+- Cache-aware data structure design (SoA vs AoS, padding, alignment, struct packing)
+- SIMD/vectorization (manual intrinsics or verified auto-vectorization)
+- Lock-free / wait-free algorithm implementation with correctness proofs or stress testing
+- Kernel bypass networking (DPDK, io_uring, RDMA)
+- Latency-critical systems with measured p50/p99/p999 numbers in nanoseconds/microseconds
+- Memory pool / arena / slab allocator design with measured allocation overhead
+- Zero-copy I/O, scatter-gather, DMA-based transfers
+- HFT / ultra-low-latency system design with nanosecond-level measurements
+- Thinking in nanoseconds and microseconds, not milliseconds
+
+MEDIUM (4-8):
+- Evidence of using profilers (perf, Valgrind/Callgrind, gprof) even without quantified results
+- Benchmarking with frameworks (Google Benchmark, Criterion)
+- Database query optimization or storage engine tuning
+- Memory layout optimization and struct packing
+- Thread pool design, work stealing, or async I/O patterns
+- Understanding of Big-O with practical application to real bottlenecks (not just theory)
+
+LOW (1-3):
+- Claims "optimized performance" without any metrics or tooling evidence
+- Basic algorithmic optimization only (choosing a hash map over a list)
+- Standard competitive programming optimization techniques only
+
+**DEBUGGING & TOOLING MASTERY (up to 8 points):**
+
+HIGH (6-8):
+- Expert-level GDB/LLDB: debugging core dumps, reading memory addresses, inspecting registers, conditional breakpoints, reverse debugging (rr)
+- Profiler mastery: perf stat, perf record, flame graphs, strace, ltrace
+- Sanitizer usage in CI/CD: ASan, TSan, UBSan, MSan integrated into build pipelines
+- Binary analysis: objdump, readelf, nm, understanding ELF/PE file format, symbol tables, relocations
+- Hardware debuggers (if applicable): JTAG, oscilloscopes, logic analyzers
+- Understanding the full compilation pipeline: preprocessing -> compiling -> assembling -> linking, and how to diagnose issues at each stage
+
+MEDIUM (3-5):
+- Comfortable with GDB basics (breakpoints, stepping, printing variables)
+- Uses Valgrind for memory leak detection
+- Familiar with build systems (CMake, Make) and compiler flags
+- Can read basic assembly output from Compiler Explorer
+
+LOW (1-2):
+- Mentions debugging but no evidence of specific tools
+- Uses only print-statement debugging
+- Basic familiarity with a build system
+
+**CRITICAL RULES:**
+- "Optimized performance" without numbers is worth 0-2 points
+- Competitive programming does NOT equal performance engineering -- it shows algorithmic skill, not systems optimization
+- Mentioning "low latency" or "high performance" in project descriptions without metrics or architecture details scores 1-3 points
+- A candidate who can describe chasing down a real segfault or race condition with specific tools is worth far more than one who lists tools without context
+
+---
+
+### 4. Systems Projects & Open Source Portfolio -- Max: 15 points
+Evaluate the quality, depth, and legibility of the candidate's systems-level projects and open source contributions. A resume bullet means little without evidence. Portfolio legibility is critical: projects with quantified metrics are worth significantly more.
+
+**THE CANONICAL PROOF-OF-WORK PROJECTS (reference for scoring):**
+- Custom memory allocator (malloc/free implementation)
+- Lock-free data structure
+- Small VM or compiler backend
+- Storage engine or key-value store
+- Latency-sensitive system (e.g., matching engine, packet processor)
+- Custom OS or bootloader
+- Emulator, assembler, or linker
+
+**HIGH SCORES (11-15 points):**
+- Contributions to major systems open source projects (Linux kernel, LLVM, GCC, glibc, PostgreSQL, SQLite, Redis, Nginx, Envoy, gRPC) -- proves ability to operate inside someone else's large codebase under real review
+- Original systems projects with significant complexity covering multiple canonical categories above
+- Projects with QUANTIFIED metrics: throughput (ops/sec), p99 latency, allocation overhead reduction, cache miss ratio improvement
+- Projects with active users, stars, or community adoption
+- Google Summer of Code on a systems project
+- Well-documented projects with README, build instructions, tests, and CI
+
+**MEDIUM SCORES (5-10 points):**
+- Personal systems projects: toy OS, simple compiler frontend, key-value store, HTTP server from scratch, matching engine
+- Projects that cover 1-2 canonical categories but lack quantified metrics
+- Contributions to smaller open source systems projects
+- Emulators, assemblers, linkers, or other toolchain components
+- Projects with clean documentation but without performance numbers
+
+**LOW SCORES (1-4 points):**
+- Academic systems projects (OS coursework, compiler class assignments) without extensions or original work
+- Personal projects that use systems libraries but don't build systems (e.g., a CLI tool in C)
+- GitHub repositories with no README, no tests, and no documentation
+- "Systems" projects that are actually web applications written in C++
+- Projects without any links (GitHub, live demo, documentation)
+
+**ZERO (0 points):**
+- No systems-related projects whatsoever
+- Only web/mobile/ML projects with no low-level component
+
+**CRITICAL RULES:**
+- A project written in C/C++ is NOT automatically a "systems project" -- a web scraper in C++ is not systems engineering
+- Having personal GitHub repos does NOT constitute open source contribution -- contributing to OTHER projects does
+- Projects must demonstrate systems thinking (memory management, concurrency, I/O, hardware interaction) to score above 5
+- The highest-leverage signal is not building more projects but making them LEGIBLE with quantified metrics
+- A real contribution to an existing open-source systems codebase proves ability to work in a large codebase under review, which self-directed projects cannot demonstrate
+
+---
+
+### 5. Algorithmic Foundations & DSA -- Max: 10 points
+Evaluate algorithmic problem-solving ability. Systems-heavy employers, especially quant/HFT firms (Jane Street, Optiver, Citadel, DRW, Tower Research, HRT, Jump Trading, Graviton) and big-tech infra teams, gate heavily on algorithmic speed and correctness as a proxy for thinking under pressure.
+
+**HIGH SCORES (8-10 points):**
+- Codeforces Expert or above (rating 1600+), or equivalent on other platforms
+- ICPC regionals or nationals participation/placement
+- IOI, IMO, or other national/international olympiad medals
+- Evidence of algorithmic thinking applied to systems problems (not just contest solutions)
+- Strong competitive programming record that is PROMINENTLY featured, not buried
+
+**MEDIUM SCORES (4-7 points):**
+- Codeforces Specialist (1400-1599) or equivalent
+- Active competitive programming profile with consistent contest participation
+- Evidence of strong data structures and algorithms knowledge through project work
+- Coursework or certifications in algorithms with practical application
+
+**LOW SCORES (1-3 points):**
+- Basic DSA knowledge demonstrated only through coursework
+- Completed a few competitive programming contests without strong ratings
+- Algorithmic knowledge evident in projects but no formal competitive record
+
+**ZERO (0 points):**
+- No evidence of algorithmic problem-solving ability
+- No competitive programming, no algorithmic projects
+
+**CRITICAL RULES:**
+- CP skill is valued for algorithmic foundation but is NEVER a substitute for systems depth -- a Codeforces Grandmaster with no systems projects still scores 0 in all other categories
+- Codeforces Expert+ is a real asset, not just a line item -- it should be weighted meaningfully
+- Rating should be surfaced prominently (e.g., in key_strengths) if it is Expert+ level
+- This category exists because the interview loop at HFT/quant firms and big-tech infra teams gates on DSA rounds
+
+---
+
+### 6. Production & Industry Experience -- Max: 5 points
+Evaluate real-world experience building, deploying, and maintaining low-level systems in production.
+
+**HIGH SCORES (4-5 points):**
+- 2+ years building production systems: databases, operating systems, compilers, firmware, networking infrastructure, storage engines
+- Experience at companies or teams known for systems work (kernel teams, embedded firms, HFT shops, cloud infrastructure teams, database companies)
+- On-call for mission-critical low-level infrastructure
+- Shipping firmware or embedded products to real customers
+- Early-stage engineer (first 10-20 employees) at a systems-focused startup
+
+**MEDIUM SCORES (2-3 points):**
+- 1 year or internships working on systems software in production
+- Internship at a systems-focused team (kernel, storage, networking, embedded)
+- Deploying and maintaining C/C++ services in production
+- Contributing to internal systems infrastructure at a company
+
+**LOW SCORES (1 point):**
+- Internships or work experience but not in systems-related roles
+- Production experience only in web/mobile/ML, not low-level systems
+- Teaching assistant for systems courses
+
+**ZERO (0 points):**
+- No work or internship experience (note: this is NOT disqualifying if the portfolio is strong)
+
+**CRITICAL RULES:**
+- Web development experience at a tech company does NOT count as systems experience
+- DevOps/SRE counts only if it involved kernel tuning, eBPF, or low-level debugging (not just Terraform/Ansible)
+- An internship helps but is NOT mandatory with a strong portfolio -- a candidate with canonical proof-of-work projects and no internship can still score very high overall
+- Startup founder experience counts only if the product was systems-level
+
+---
+
+## BONUS POINTS (Maximum total: 15 points)
+Award bonus points for exceptional qualifications:
+- +3-5 points for accepted patches to Linux kernel, LLVM, GCC, glibc, or similar tier-1 systems projects
+- +2-3 points for published research papers in systems conferences (OSDI, SOSP, USENIX ATC, EuroSys, ASPLOS, NSDI)
+- +2-3 points for FPGA, GPU compute (CUDA/OpenCL/Vulkan compute), or custom silicon experience
+- +1-2 points for technical blog posts demonstrating deep systems knowledge with original analysis (not just tutorials)
+- +1-2 points for Codeforces Grandmaster or ICPC World Finals participation
+- +1 point for portfolio website or well-organized GitHub profile with quantified project descriptions
+
+**CRITICAL**: The total bonus points cannot exceed 15 points under any circumstances.
+
+## DEDUCTIONS (Maximum total: 20 points)
+Subtract points for red flags:
+- -3 to -5 points for claiming "systems" or "low-level" experience but resume shows only web frameworks (React, Django, Express, Node.js)
+- -3 to -5 points for exaggerated performance claims without ANY metrics, profiling tools, or measurement methodology ("optimized performance by 10x" with no evidence)
+- -2 to -3 points for listing "Linux" as a core systems skill with no evidence of kernel/systems work (just using Ubuntu as a desktop OS)
+- -2 to -3 points for projects without any links (GitHub, live demo, or documentation)
+- -1 to -2 points for each buzzword-heavy description without technical substance ("leveraged cutting-edge technologies to deliver scalable solutions")
+- -2 points for claiming C/C++ expertise but all demonstrable projects are in Python/JavaScript
+- -1 to -2 points for projects with generic names and no systems content ("Calculator", "Todo App", "Weather App")
+
+## DOMAIN-SPECIFIC AWARENESS
+When evaluating, be aware that this role may target one of these sub-fields. Award extra credit if the candidate shows depth in any:
+- **Embedded Systems:** Bare-metal programming, RTOS (FreeRTOS, Zephyr), device drivers, reading hardware datasheets
+- **Kernel/Driver Development:** Linux kernel modules, Linux device model, Windows Driver Framework (WDF)
+- **Networking:** Deep TCP/IP stack knowledge, packet processing (DPDK, XDP), NIC programming
+- **Virtualization/Cloud Infrastructure:** Hypervisors (KVM, Xen), containers (cgroups, namespaces), VMMs
+- **Compilers & Runtimes:** LLVM passes, code generation, garbage collectors, JIT compilation
+- **Storage Engines:** LSM trees, B-trees, WAL, MVCC, buffer pool management
+- **HFT/Trading Systems:** Matching engines, order books, kernel bypass, FPGA acceleration
+
+## CRITICAL REQUIREMENTS
+1. You MUST respond with ONLY the JSON structure below -- no summary, no other fields
+2. You MUST fill ALL SIX score categories: systems_programming, os_and_architecture, performance_optimization, systems_projects, algorithmic_foundations, production_experience
+3. You MUST provide specific, detailed evidence for each score referencing actual resume content
+4. You MUST NOT add any other fields like "summary", "skills", "experience", etc.
+5. You MUST NOT change the field names or structure
+
+**IMPORTANT LIST CONSTRAINTS:**
+- key_strengths: Provide 1-5 items (maximum 5 key strengths)
+- areas_for_improvement: Provide 1-3 items (maximum 3 areas for improvement)
+
+**IMPORTANT SCORE CONSTRAINTS:**
+- Evidence fields cannot be empty strings
+- All category scores must be >= 0 (cannot be negative)
+- **CATEGORY SCORE LIMITS** (CANNOT be exceeded under any circumstances):
+  - systems_programming: 0-25 points (maximum 25)
+  - os_and_architecture: 0-25 points (maximum 25)
+  - performance_optimization: 0-20 points (maximum 20)
+  - systems_projects: 0-15 points (maximum 15)
+  - algorithmic_foundations: 0-10 points (maximum 10)
+  - production_experience: 0-5 points (maximum 5)
+- Bonus points total must be <= 15 (maximum 15 points)
+- **OVERALL SCORE LIMIT**: The total score (categories + bonus - deductions) cannot exceed 130 points
+
+**DO NOT RETURN A RESUME SUMMARY. RETURN ONLY THE SCORING EVALUATION IN THE SPECIFIED JSON FORMAT.**
+
+Analyze the following resume and provide a JSON response with this EXACT structure (all fields are required):
+
+{
+    "scores": {
+        "systems_programming": {"score": 0, "max": 25, "evidence": "string"},
+        "os_and_architecture": {"score": 0, "max": 25, "evidence": "string"},
+        "performance_optimization": {"score": 0, "max": 20, "evidence": "string"},
+        "systems_projects": {"score": 0, "max": 15, "evidence": "string"},
+        "algorithmic_foundations": {"score": 0, "max": 10, "evidence": "string"},
+        "production_experience": {"score": 0, "max": 5, "evidence": "string"}
+    },
+    "bonus_points": {"total": 0, "breakdown": "string"},
+    "deductions": {"total": 0, "reasons": "string"},
+    "key_strengths": ["strength1", "strength2", "strength3"],
+    "areas_for_improvement": ["improvement1", "improvement2"]
+}
+
+Resume to evaluate:
+
+{{ text_content }}

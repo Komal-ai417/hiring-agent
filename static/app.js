@@ -34,6 +34,11 @@ document.addEventListener('DOMContentLoaded', () => {
         opt.textContent = role.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
         roleSelect.appendChild(opt);
       });
+      
+      // Default to software engineering intern if available
+      if (data.roles.includes('software_engineering_intern')) {
+        roleSelect.value = 'software_engineering_intern';
+      }
     } catch (err) {
       roleSelect.innerHTML = '<option value="">Failed to load roles</option>';
     }

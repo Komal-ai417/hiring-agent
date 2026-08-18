@@ -1,0 +1,45 @@
+{
+  "name": "lowlevel_systems_engineer",
+  "position_title": "Low-Level Systems Software Engineer",
+  "bonus_max": 15,
+  "min_final_score": -20,
+  "max_final_score": 130,
+  "categories": [
+    {
+      "key": "systems_programming",
+      "label": "Core Systems Languages (C/C++/Rust/Assembly)",
+      "max": 25,
+      "icon": ""
+    },
+    {
+      "key": "os_and_architecture",
+      "label": "OS Internals, Kernel & Hardware Architecture",
+      "max": 25,
+      "icon": ""
+    },
+    {
+      "key": "performance_optimization",
+      "label": "Performance Engineering, Debugging & Tooling",
+      "max": 20,
+      "icon": ""
+    },
+    {
+      "key": "systems_projects",
+      "label": "Systems Projects & Open Source Portfolio",
+      "max": 15,
+      "icon": ""
+    },
+    {
+      "key": "algorithmic_foundations",
+      "label": "Algorithmic Foundations & DSA",
+      "max": 10,
+      "icon": ""
+    },
+    {
+      "key": "production_experience",
+      "label": "Production & Industry Experience",
+      "max": 5,
+      "icon": ""
+    }
+  ]
+}
