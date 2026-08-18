@@ -265,7 +265,7 @@ class PDFHandler:
         self, text_content: str
     ) -> Optional[JSONResume]:
         import concurrent.futures
-        
+
         start_time = time.time()
 
         sections = ["basics", "work", "education", "skills", "projects", "awards"]
@@ -293,18 +293,23 @@ class PDFHandler:
                 section_data = self._extract_section_data(text_content, section_name)
             return section_name, section_data
 
-        with concurrent.futures.ThreadPoolExecutor(max_workers=len(sections)) as executor:
+        with concurrent.futures.ThreadPoolExecutor(
+            max_workers=len(sections)
+        ) as executor:
             future_to_section = {
-                executor.submit(_fetch_section, section): section for section in sections
+                executor.submit(_fetch_section, section): section
+                for section in sections
             }
-            
+
             for future in concurrent.futures.as_completed(future_to_section):
                 section_name = future_to_section[future]
                 try:
                     section_name, section_data = future.result()
                     if section_data:
                         complete_resume.update(section_data)
-                        logger.debug(f"✅ Successfully extracted {section_name} section")
+                        logger.debug(
+                            f"✅ Successfully extracted {section_name} section"
+                        )
                     elif section_data is not None:
                         # Valid response with no content for this section (e.g. no awards)
                         logger.warning(f"⚠️ {section_name} section empty; continuing")
@@ -314,7 +319,9 @@ class PDFHandler:
                         )
                         return None
                 except Exception as exc:
-                    logger.error(f"⚠️ {section_name} section generated an exception: {exc}")
+                    logger.error(
+                        f"⚠️ {section_name} section generated an exception: {exc}"
+                    )
                     return None
 
         try:
