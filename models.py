@@ -292,11 +292,13 @@ class OpenAICompatibleProvider:
         api_key: Optional[str] = None,
         structured_output: str = "json_schema",
         extra_body: Optional[Dict[str, Any]] = None,
+        extra_headers: Optional[Dict[str, str]] = None,
     ):
         self.base_url = base_url.rstrip("/")
         self.api_key = api_key
         self.structured_output = structured_output
         self.extra_body = extra_body or {}
+        self.extra_headers = extra_headers or {}
 
     def chat(
         self,
@@ -332,6 +334,7 @@ class OpenAICompatibleProvider:
         headers = {"Content-Type": "application/json"}
         if self.api_key:
             headers["Authorization"] = f"Bearer {self.api_key}"
+        headers.update(self.extra_headers)
 
         url = f"{self.base_url}/chat/completions"
 

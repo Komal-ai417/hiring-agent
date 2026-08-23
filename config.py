@@ -50,11 +50,16 @@ def provider_for(model_name: str) -> dict:
             **prov.get("extra_body", {}),
             **prov["models"][model_name].get("extra_body", {}),
         }
+        extra_headers = {
+            **prov.get("extra_headers", {}),
+            **prov["models"][model_name].get("extra_headers", {}),
+        }
         return {
             "base_url": prov["base_url"].rstrip("/"),
             "api_key": api_key,
             "structured_output": prov.get("structured_output", "json_schema"),
             "extra_body": extra_body,
+            "extra_headers": extra_headers,
         }
 
     available = ", ".join(sorted(MODEL_PARAMETERS))

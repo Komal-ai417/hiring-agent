@@ -36,6 +36,18 @@
         "claude-sonnet-5":  { "temperature": 0.1, "top_p": 0.9 },
         "claude-haiku-4-5": { "temperature": 0.1, "top_p": 0.9 }
       }
+    },
+    "openrouter": {
+      "base_url": "https://openrouter.ai/api/v1",
+      "api_key_env": "OPENROUTER_API_KEY",
+      "structured_output": "none",
+      "extra_headers": {
+        "HTTP-Referer": "https://hiring-agent.test",
+        "X-OpenRouter-Title": "Hiring Agent"
+      },
+      "models": {
+        "stealth/ox-alpha": { "temperature": 0.1, "top_p": 0.9 }
+      }
     }
   }
 }

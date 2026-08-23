@@ -49,4 +49,5 @@ def initialize_llm_provider(model_name: str) -> Any:
         api_key=cfg["api_key"],
         structured_output=cfg["structured_output"],
         extra_body=cfg["extra_body"],
+        extra_headers=cfg.get("extra_headers", {}),
     )
